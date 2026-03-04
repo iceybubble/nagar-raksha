@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
+import { IncidentReport } from './features/IncidentReport/IncidentReport'
+
+const LANGS = { en: 'English', hi: 'हिन्दी' }
 
 function App() {
   const [activeQuest, setActiveQuest] = useState('phishing')
@@ -6,6 +9,7 @@ function App() {
   const [scanResult, setScanResult] = useState(null)
   const [isScanning, setIsScanning] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(true)
+  const [language, setLanguage] = useState('en')
   const fileInputRef = useRef(null)
 
   const phishingPatterns = {
@@ -77,10 +81,9 @@ function App() {
 
   const handleWifiScan = () => {
     setRakshaStars(prev => prev + 15)
-    alert('Unsafe WiFi detected\n"This Public Hotspot is not secure"')
+    alert(language === "hi" ? 'असुरक्षित WiFi मिला\n"यह पब्लिक हॉटस्पॉट सुरक्षित नहीं है"' : 'Unsafe WiFi detected\n"This Public Hotspot is not secure"')
   }
 
-  // Toggle theme
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark')
@@ -104,11 +107,24 @@ function App() {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
+            <select
+              value={language}
+              onChange={e => setLanguage(e.target.value)}
+              title="Switch Language"
+              style={{ marginLeft: "1rem", padding: "0.3rem" }}
+            >
+              {Object.entries(LANGS).map(([code, label]) =>
+                <option key={code} value={code}>{label}</option>)}
+            </select>
           </div>
-          <p className="subtitle">India Innovates Hackathon 2026 | Team Nagrik</p>
+          <p className="subtitle">
+            {language === "hi"
+              ? "इंडिया इनोवेट्स हैकाथॉन 2026 | टीम नागरिक"
+              : "India Innovates Hackathon 2026 | Team Nagrik"}
+          </p>
           <div className="stats">
             <div className="stat-item">
-              <span id="raksha-count">{rakshaStars}</span> Raksha Stars
+              <span id="raksha-count">{rakshaStars}</span> {language === "hi" ? "रक्षा स्टार्स" : "Raksha Stars"}
             </div>
             <div className="stat-item">Delhi Ward #7</div>
           </div>
@@ -118,19 +134,19 @@ function App() {
       <main className="main-content">
         <div className="container">
           <div className="quest-selector">
-            <h2>Active Quest</h2>
+            <h2>{language === "hi" ? "सक्रिय क्वेस्ट" : "Active Quest"}</h2>
             <div className="quest-buttons">
               <button 
                 className={`quest-btn quest-phishing ${activeQuest === 'phishing' ? 'active' : ''}`}
                 onClick={() => setActiveQuest('phishing')}
               >
-                Phishing Scanner
+                {language === "hi" ? "फिशिंग स्कैनर" : "Phishing Scanner"}
               </button>
               <button 
                 className={`quest-btn quest-wifi ${activeQuest === 'wifi' ? 'active' : ''}`}
                 onClick={() => setActiveQuest('wifi')}
               >
-                WiFi Guardian
+                {language === "hi" ? "WiFi गार्डियन" : "WiFi Guardian"}
               </button>
             </div>
           </div>
@@ -138,13 +154,15 @@ function App() {
           <div className="grid">
             <div className="card">
               <h3 className="card-title">
-                {activeQuest === 'phishing' ? 'Phishing SMS Scanner' : 'Public WiFi Detector'}
+                {activeQuest === 'phishing'
+                  ? (language === "hi" ? "फिशिंग SMS स्कैनर" : "Phishing SMS Scanner")
+                  : (language === "hi" ? "पब्लिक WiFi डिटेक्टर" : "Public WiFi Detector")}
               </h3>
               
               {activeQuest === 'phishing' ? (
                 <div>
                   <div className="file-input-wrapper">
-                    <label>Upload SMS/Email File (.txt)</label>
+                    <label>{language === "hi" ? "SMS/ईमेल टेक्स्ट अपलोड करें" : "Upload SMS/Email File (.txt)"}</label>
                     <input 
                       type="file" 
                       ref={fileInputRef}
@@ -153,37 +171,53 @@ function App() {
                     />
                   </div>
 
-                  {/* Sample Buttons - INSERTED HERE */}
+                  {/* Sample Buttons */}
                   <div className="sample-buttons">
-                    <button className="sample-btn" onClick={() => loadSample(0)}>UPI Scam</button>
-                    <button className="sample-btn" onClick={() => loadSample(1)}>Bank KYC</button>
-                    <button className="sample-btn" onClick={() => loadSample(2)}>Aadhaar</button>
+                    <button className="sample-btn" onClick={() => loadSample(0)}>
+                      {language === "hi" ? "UPI स्कैम" : "UPI Scam"}
+                    </button>
+                    <button className="sample-btn" onClick={() => loadSample(1)}>
+                      {language === "hi" ? "बैंक KYC" : "Bank KYC"}
+                    </button>
+                    <button className="sample-btn" onClick={() => loadSample(2)}>
+                      {language === "hi" ? "आधार" : "Aadhaar"}
+                    </button>
                   </div>
                   
                   {scanResult && (
                     <div className={`scan-result ${scanResult.isPhishing ? 'scan-result-high' : 'scan-result-safe'}`}>
                       <h4 style={{fontWeight: 'bold', marginBottom: '0.5rem'}}>
-                        Risk Score: {scanResult.riskScore}%
+                        {language === "hi" ? "रिस्क स्कोर:" : "Risk Score:"} {scanResult.riskScore}%
                       </h4>
-                      <p>{scanResult.isPhishing ? scanResult.hindiAlert : scanResult.englishAlert}</p>
+                      <p>{language === "hi" ? scanResult.hindiAlert : scanResult.englishAlert}</p>
                       {scanResult.reasons.length > 0 && (
                         <details>
-                          <summary>Detection Reasons</summary>
+                          <summary>{language === "hi" ? "डिटेक्शन कारण" : "Detection Reasons"}</summary>
                           <ul style={{marginTop: '0.5rem', fontSize: '0.9rem'}}>
                             {scanResult.reasons.map((reason, i) => (
-                              <li key={i} style={{marginBottom: '0.25rem'}}>{reason}</li>
+                              <li key={i} style={{marginBottom: '0.25rem'}}>
+                                {reason}
+                              </li>
                             ))}
                           </ul>
                         </details>
                       )}
                       {scanResult.sampleText && (
                         <details style={{marginTop: '0.5rem'}}>
-                          <summary>Sample Text</summary>
+                          <summary>{language === "hi" ? "सैंपल टेक्स्ट" : "Sample Text"}</summary>
                           <p style={{fontSize: '0.85rem', fontFamily: 'monospace', padding: '0.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '4px'}}>
                             {scanResult.sampleText}
                           </p>
                         </details>
                       )}
+                      {/* Incident report module! */}
+                      <IncidentReport
+                        ward="Delhi #7"
+                        stars={rakshaStars}
+                        threat={scanResult.isPhishing ? (language === "hi" ? "UPI फिशिंग" : "UPI Phishing") : "Safe"}
+                        sms={scanResult.sampleText || ""}
+                        language={language}
+                      />
                     </div>
                   )}
                   
@@ -192,43 +226,49 @@ function App() {
                     onClick={handlePhishingScan}
                     disabled={isScanning}
                   >
-                    {isScanning ? 'Scanning...' : 'SCAN NOW'}
+                    {isScanning
+                      ? (language === "hi" ? "स्कैन किया जा रहा है..." : "Scanning...")
+                      : (language === "hi" ? "अभी स्कैन करें" : "SCAN NOW")}
                   </button>
                 </div>
               ) : (
                 <div>
                   <div className="file-input-wrapper" style={{textAlign: 'center'}}>
                     <div style={{fontSize: '4rem', marginBottom: '1rem'}}>WiFi</div>
-                    <p style={{color: '#ffaa80', fontSize: '1.3rem'}}>Scanning nearby networks...</p>
+                    <p style={{color: '#ffaa80', fontSize: '1.3rem'}}>
+                      {language === "hi"
+                        ? "पास के नेटवर्क स्कैन किए जा रहे हैं..."
+                        : "Scanning nearby networks..."}
+                    </p>
                   </div>
                   <button className="scan-btn scan-wifi" onClick={handleWifiScan}>
-                    DETECT RISKS
+                    {language === "hi" ? "जोखिम डिटेक्ट करें" : "DETECT RISKS"}
                   </button>
                 </div>
               )}
             </div>
 
             <div className="leaderboard">
-              <h3>Leaderboard</h3>
+              <h3>{language === "hi" ? "लीडरबोर्ड" : "Leaderboard"}</h3>
               <div className="leaderboard-item rank-1">
                 <div className="rank-circle">1</div>
                 <div>
                   <div style={{fontWeight: 'bold', fontSize: '1.3rem'}}>Delhi Ward #7</div>
-                  <div className="stars">{rakshaStars} Stars</div>
+                  <div className="stars">{rakshaStars} {language === "hi" ? "स्टार्स" : "Stars"}</div>
                 </div>
               </div>
               <div className="leaderboard-item rank-2">
                 <div className="rank-circle">2</div>
                 <div>
                   <div style={{fontWeight: 'bold'}}>Mumbai Ward #3</div>
-                  <div>245 Stars</div>
+                  <div>245 {language === "hi" ? "स्टार्स" : "Stars"}</div>
                 </div>
               </div>
               <div className="leaderboard-item rank-3">
                 <div className="rank-circle">3</div>
                 <div>
                   <div style={{fontWeight: 'bold'}}>Bangalore #12</div>
-                  <div>198 Stars</div>
+                  <div>198 {language === "hi" ? "स्टार्स" : "Stars"}</div>
                 </div>
               </div>
             </div>
