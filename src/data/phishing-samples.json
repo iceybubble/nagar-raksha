@@ -1,0 +1,83 @@
+{
+  "phishing": [
+    {
+      "text": "Urgent UPI payment required. Scan QR code now or account suspended. PhonePe support team",
+      "riskScore": 92,
+      "category": "upi_scam",
+      "hindi": "खतरनाक फिशिंग! तुरंत रिपोर्ट करें",
+      "detected": ["upi", "urgent", "phonepe", "scan qr"]
+    },
+    {
+      "text": "SBI Account verification needed. Click link to update KYC immediately or account blocked",
+      "riskScore": 88,
+      "category": "bank_scam", 
+      "hindi": "उच्च जोखिम - SBI फर्जी लिंक",
+      "detected": ["sbi", "update", "urgent"]
+    },
+    {
+      "text": "Aadhaar update required. Verify PAN and Aadhaar now or services suspended. Govt portal",
+      "riskScore": 95,
+      "category": "govt_scam",
+      "hindi": "सरकारी फिशिंग! ना खोले",
+      "detected": ["aadhaar", "pan", "urgent"]
+    },
+    {
+      "text": "Work from home job. Earn 5000 daily. Click link to register immediately limited seats",
+      "riskScore": 85,
+      "category": "job_scam",
+      "hindi": "जॉब स्कैम - फर्जी लिंक",
+      "detected": ["work from home", "5000", "urgent"]
+    },
+    {
+      "text": "Paytm KYC update pending. Verify now or wallet blocked. Official Paytm support",
+      "riskScore": 90,
+      "category": "upi_scam",
+      "hindi": "Paytm फिशिंग! रिपोर्ट करें",
+      "detected": ["paytm", "kyc", "wallet"]
+    },
+    {
+      "text": "HDFC Bank OTP verification failed. Click to resend OTP or account locked permanently",
+      "riskScore": 87,
+      "category": "bank_scam",
+      "hindi": "HDFC बैंक फर्जी OTP",
+      "detected": ["hdfc", "otp", "account locked"]
+    }
+  ],
+  "legitimate": [
+    {
+      "text": "Good morning. Meeting at 2 PM in conference room. Regards, Team Lead",
+      "riskScore": 5,
+      "category": "office",
+      "hindi": "सुरक्षित मैसेज",
+      "detected": []
+    },
+    {
+      "text": "Your Swiggy order #12345 has been delivered. Thank you for shopping",
+      "riskScore": 8,
+      "category": "delivery",
+      "hindi": "सुरक्षित ऑर्डर अपडेट",
+      "detected": []
+    },
+    {
+      "text": "Electricity bill payment of Rs 2450 due on 15th March. Pay now",
+      "riskScore": 12,
+      "category": "billing",
+      "hindi": "बिजली बिल नोटिफिकेशन",
+      "detected": []
+    },
+    {
+      "text": "Raju calling from shop. Your order ready for pickup tomorrow",
+      "riskScore": 3,
+      "category": "local_shop",
+      "hindi": "स्थानीय दुकान मैसेज",
+      "detected": []
+    }
+  ],
+  "test_cases": [
+    "Your Amazon order #ABC123 shipped. Expected delivery tomorrow",
+    "ICICI Bank: Your loan application approved. Click to view details",
+    "Free Netflix subscription. Verify phone number now limited offer",
+    "Grocery delivery in 30 mins. Track order live",
+    "Axis Bank fraud alert. Suspicious transaction detected verify now"
+  ]
+}
